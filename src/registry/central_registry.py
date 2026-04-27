@@ -1,4 +1,3 @@
-
 class CentralRegistry:
     _instance = None
 

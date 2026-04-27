@@ -10,8 +10,7 @@ class AbstractKiosk(ABC):
         self._registry  = CentralRegistry()
 
     @abstractmethod
-    def purchase_item(self, product_id: str, user_id: str) -> bool:
-        pass
+    def purchase_item(self, product_id: str, user_id: str) -> bool: pass
 
     def print_config(self):
         print(f"  [Kiosk] Location : {self._registry.get('kioskLocation')}")
