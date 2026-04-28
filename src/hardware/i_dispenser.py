@@ -7,3 +7,9 @@ class IDispenser(ABC):
 
     @abstractmethod
     def is_ready(self) -> bool: pass
+
+    @abstractmethod
+    def recalibrate(self): pass
+
+    @abstractmethod
+    def get_type(self) -> str: pass
