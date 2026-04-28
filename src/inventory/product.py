@@ -1,7 +1,6 @@
 from src.inventory.i_inventory_item import IInventoryItem
 
 class Product(IInventoryItem):
-
     def __init__(self, product_id, name, price, stock):
         self._id    = product_id
         self._name  = name
@@ -15,5 +14,12 @@ class Product(IInventoryItem):
     def is_available(self)        -> bool:  return self._stock > 0
 
     def deduct(self):
-        self._stock -= 1
-        print(f"  [Inventory] Stock deducted for: {self._name}")
+        if self._stock > 0:
+            self._stock -= 1
+
+    def restock(self, quantity):
+        self._stock += quantity
+
+    def to_dict(self):
+        return {"id": self._id, "name": self._name,
+                "price": self._price, "stock": self._stock, "type": "product"}

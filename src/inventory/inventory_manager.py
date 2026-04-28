@@ -1,9 +1,24 @@
+import json, os
 from src.inventory.product import Product
 
 class InventoryManager:
-
     def __init__(self):
         self._items = {}
+
+    def load(self):
+        path = "data/inventory.json"
+        if os.path.exists(path):
+            with open(path) as f:
+                data = json.load(f)
+            for item in data:
+                self._items[item["id"]] = Product(
+                    item["id"], item["name"], item["price"], item["stock"])
+
+    def save(self):
+        os.makedirs("data", exist_ok=True)
+        with open("data/inventory.json", "w") as f:
+            json.dump([i.to_dict() for i in self._items.values()
+                       if isinstance(i, Product)], f, indent=2)
 
     def add_item(self, item):
         self._items[item.get_id()] = item
@@ -19,11 +34,7 @@ class InventoryManager:
         item = self._items.get(item_id)
         if isinstance(item, Product):
             item.deduct()
+            self.save()
 
-    def print_inventory(self):
-        print("\n  --- Inventory ---")
-        for item in self._items.values():
-            print(f"  {item.get_name():<20} "
-                  f"Price: ₹{item.get_price():.2f}  "
-                  f"Stock: {item.get_available_stock()}")
-        print("  -----------------")
+    def all_items(self):
+        return list(self._items.values())
