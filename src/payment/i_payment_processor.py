@@ -7,3 +7,6 @@ class IPaymentProcessor(ABC):
 
     @abstractmethod
     def refund_payment(self, transaction_id: str) -> bool: pass
+
+    @abstractmethod
+    def get_name(self) -> str: pass
