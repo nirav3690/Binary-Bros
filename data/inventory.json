@@ -1,0 +1,44 @@
+[
+  {
+    "id": "P001",
+    "name": "Water Bottle",
+    "price": 20.0,
+    "stock": 5,
+    "type": "product"
+  },
+  {
+    "id": "P002",
+    "name": "Biscuit Pack",
+    "price": 15.0,
+    "stock": 7,
+    "type": "product"
+  },
+  {
+    "id": "P003",
+    "name": "Bandage Roll",
+    "price": 30.0,
+    "stock": 8,
+    "type": "product"
+  },
+  {
+    "id": "P004",
+    "name": "Hand Sanitiser",
+    "price": 50.0,
+    "stock": 3,
+    "type": "product"
+  },
+  {
+    "id": "P005",
+    "name": "Paracetamol",
+    "price": 25.0,
+    "stock": 11,
+    "type": "product"
+  },
+  {
+    "id": "P006",
+    "name": "Face Mask",
+    "price": 10.0,
+    "stock": 17,
+    "type": "product"
+  }
+]

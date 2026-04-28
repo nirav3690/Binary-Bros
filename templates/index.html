@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aura Retail OS</title>
+    <link rel="stylesheet" href="/static/style.css?v=3">
+</head>
+
+<body>
+
+    <header>
+        <div class="header-left">
+            <h1>Aura Retail OS</h1>
+            <span id="location-badge">Loading...</span>
+        </div>
+        <div class="header-right">
+            <span id="kiosk-badge">Food Kiosk</span>
+            <button id="admin-btn" onclick="openAdmin()">Admin</button>
+        </div>
+    </header>
+
+    <div id="login-screen" class="screen active">
+        <div class="login-card">
+            <h2>Welcome to Aura Kiosk</h2>
+            <p>Enter your name to start shopping</p>
+            <input type="text" id="username-input" placeholder="Your name" maxlength="30">
+            <button class="btn-primary" onclick="userLogin()">Start Shopping</button>
+        </div>
+    </div>
+
+    <div id="shop-screen" class="screen">
+        <div class="user-bar">
+            <span>Hello, <strong id="display-name"></strong></span>
+            <button onclick="logout()">Logout</button>
+        </div>
+        <div class="kiosk-info">
+            <span id="shop-kiosk-type"></span>
+            <span id="shop-dispenser"></span>
+            <span id="shop-payment"></span>
+        </div>
+        <div id="products-grid" class="products-grid"></div>
+    </div>
+
+    <div id="admin-screen" class="screen">
+        <div class="admin-header">
+            <h2>Admin Panel</h2>
+            <button onclick="closeAdmin()">Close</button>
+        </div>
+
+        <div class="admin-tabs">
+            <button class="tab active" onclick="showTab('inventory-tab', this)">Inventory</button>
+            <button class="tab" onclick="showTab('kiosk-tab', this)">Kiosk Setup</button>
+            <button class="tab" onclick="showTab('transactions-tab', this)">Transactions</button>
+            <button class="tab" onclick="showTab('modules-tab', this)">Hardware Modules</button>
+            <button class="tab" onclick="showTab('proxy-tab', this)">Proxy Log</button>
+        </div>
+
+        <div id="inventory-tab" class="tab-content active">
+            <h3>Inventory Management</h3>
+            <div id="admin-products"></div>
+        </div>
+
+        <div id="kiosk-tab" class="tab-content">
+            <h3>Kiosk Configuration</h3>
+            <div class="config-grid">
+                <div class="config-group">
+                    <label>Kiosk Type</label>
+                    <select id="kiosk-type-select">
+                        <option value="food">Food Kiosk</option>
+                        <option value="pharmacy">Pharmacy Kiosk</option>
+                        <option value="emergency">Emergency Relief Kiosk</option>
+                    </select>
+                </div>
+                <div class="config-group">
+                    <label>Dispenser Hardware</label>
+                    <select id="dispenser-select">
+                        <option value="spiral">Spiral Dispenser</option>
+                        <option value="robotic">Robotic Arm Dispenser</option>
+                        <option value="conveyor">Conveyor Dispenser</option>
+                    </select>
+                </div>
+                <div class="config-group">
+                    <label>Payment Provider</label>
+                    <select id="payment-select">
+                        <option value="credit">Credit Card</option>
+                        <option value="upi">UPI</option>
+                        <option value="wallet">Digital Wallet</option>
+                    </select>
+                </div>
+                <div class="config-group">
+                    <label>Kiosk Location</label>
+                    <input type="text" id="location-input">
+                </div>
+            </div>
+            <button class="btn-primary" onclick="applyKioskConfig()">Apply Configuration</button>
+            <div id="config-msg"></div>
+        </div>
+
+        <div id="transactions-tab" class="tab-content">
+            <h3>Transaction History</h3>
+            <div id="txn-summary" class="txn-summary"></div>
+            <div id="transactions-list"></div>
+        </div>
+
+        <div id="modules-tab" class="tab-content">
+            <h3>Hardware Modules — Decorator Pattern</h3>
+            <p class="pattern-note">Modules attach/detach dynamically without modifying base kiosk code.</p>
+            <div class="modules-grid">
+                <div class="module-card">
+                    <h4>Refrigeration Module</h4>
+                    <p>Required for perishable products in FoodKiosk</p>
+                    <div id="refrig-status" class="status-badge inactive">Inactive</div>
+                    <div class="module-btns">
+                        <button onclick="toggleModule('refrigeration','attach')">Attach</button>
+                        <button onclick="toggleModule('refrigeration','detach')">Detach</button>
+                    </div>
+                </div>
+                <div class="module-card">
+                    <h4>Solar Monitor Module</h4>
+                    <p>Monitors solar power status for off-grid kiosks</p>
+                    <div id="solar-status" class="status-badge inactive">Inactive</div>
+                    <div class="module-btns">
+                        <button onclick="toggleModule('solar','attach')">Attach</button>
+                        <button onclick="toggleModule('solar','detach')">Detach</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="proxy-tab" class="tab-content">
+            <h3>Secure Inventory Proxy Log</h3>
+            <p class="pattern-note">Every inventory access is intercepted and logged by SecureInventoryProxy.</p>
+            <div id="proxy-log-list"></div>
+        </div>
+    </div>
+
+    <div id="admin-modal" class="modal">
+        <div class="modal-card">
+            <h3>Admin Login</h3>
+            <input type="password" id="admin-password" placeholder="Enter admin password">
+            <div id="admin-error" class="error-msg"></div>
+            <div class="modal-btns">
+                <button class="btn-primary" onclick="adminLogin()">Login</button>
+                <button onclick="closeAdminModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="purchase-modal" class="modal">
+        <div class="modal-card">
+            <h3 id="modal-product-name"></h3>
+            <p id="modal-product-price"></p>
+            <p id="modal-payment-info"></p>
+            <div id="purchase-result"></div>
+            <div class="modal-btns" id="modal-action-btns">
+                <button class="btn-primary" id="confirm-purchase-btn">Confirm Purchase</button>
+                <button onclick="closePurchaseModal()">Cancel</button>
+            </div>
+            <button id="modal-close-btn" onclick="closePurchaseModal()"
+                style="display:none; margin-top:12px; width:100%; padding:10px; border-radius:6px; cursor:pointer; border:1px solid #ddd; font-size:14px;">Close</button>
+        </div>
+    </div>
+
+    <script src="/static/app.js?v=3"></script>
+</body>
+
+</html>
