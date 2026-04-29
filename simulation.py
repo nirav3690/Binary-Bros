@@ -1,7 +1,9 @@
 from src.registry.central_registry import CentralRegistry
 from src.hardware.spiral_dispenser import SpiralDispenser
 from src.inventory.product import Product
-from src.inventory.product_bundle import ProductBundle
+import sys
+sys.stdout.reconfigure(encoding="utf-8")
+sys.stderr.reconfigure(encoding="utf-8")
 from src.inventory.inventory_manager import InventoryManager
 from src.payment.credit_card_gateway import CreditCardGateway
 from src.payment.credit_card_adapter import CreditCardAdapter
@@ -71,7 +73,7 @@ def admin_menu(inventory, registry):
             if item_id:
                 item = inventory.get_item(item_id)
                 if isinstance(item, Product):
-                    item._stock += qty
+                    item.restock(qty)
                     print(f"  Restocked {item.get_name()} by {qty}."
                           f" New stock: {item.get_available_stock()}")
             else:
