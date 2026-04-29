@@ -25,5 +25,8 @@ class SecureInventoryProxy:
     def save(self):
         return self._real.save()
 
+    def print_inventory(self):
+        return self._real.print_inventory()
+
     def get_log(self):
         return list(self._log)
