@@ -1,6 +1,8 @@
 from flask import Flask, request, jsonify, render_template
 import json, os
-
+import sys
+sys.stdout.reconfigure(encoding="utf-8")
+sys.stderr.reconfigure(encoding="utf-8")
 from src.registry.central_registry import CentralRegistry
 from src.hardware.spiral_dispenser import SpiralDispenser
 from src.hardware.robotic_arm_dispenser import RoboticArmDispenser
