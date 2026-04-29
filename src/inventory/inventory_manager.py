@@ -36,5 +36,15 @@ class InventoryManager:
             item.deduct()
             self.save()
 
+    def print_inventory(self):
+        print("\n  ---- Current Inventory ----")
+        print(f"  {'ID':<8} {'Name':<20} {'Price':>8} {'Stock':>6}")
+        print("  " + "-" * 44)
+        for item in self._items.values():
+            if isinstance(item, Product):
+                print(f"  {item.get_id():<8} {item.get_name():<20} "
+                      f"₹{item.get_price():>6.2f} {item.get_available_stock():>6}")
+        print("  " + "-" * 44)
+
     def all_items(self):
         return list(self._items.values())
